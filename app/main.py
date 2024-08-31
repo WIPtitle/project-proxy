@@ -4,6 +4,7 @@ from fastapi import FastAPI
 
 from app.routers.router_wrapper import RouterWrapper
 
+
 routers: List[RouterWrapper] = [
 ]
 

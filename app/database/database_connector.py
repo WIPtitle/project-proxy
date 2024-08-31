@@ -1,6 +1,6 @@
 from abc import abstractmethod, ABC
 
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
 
 class DatabaseConnector(ABC):

@@ -1,32 +1,42 @@
+x-common-variables: &common-variables
+   PG_CREDENTIALS_FILE: /shared/pg_credentials.json
+
 services:
   db:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydatabase
+    image: postgres:16.4
+    environment: *common-variables
     volumes:
       - db-data:/var/lib/postgresql/data
+      - shared:/shared
+      - ./database_init.sh:/usr/bin/database_init.sh
     expose:
       - "5432"
+    command: ["/bin/bash", "/usr/bin/database_init.sh"]
+    restart: on-failure
 
   project-core:
     build: .
-    environment:
-      DATABASE_URL: postgresql://user:password@db:5432/mydatabase
+    environment: *common-variables
     ports:
       - "8000:8000"
     depends_on:
       - db
+      - magnetic-reed-listener
+    volumes:
+      - shared:/shared
+    restart: on-failure
 
   magnetic-reed-listener:
     build: ./microservices/magnetic-reed-listener
-    environment:
-      DATABASE_URL: postgresql://user:password@db:5432/mydatabase
+    environment: *common-variables
     ports:
       - "8001:8000"
     depends_on:
       - db
+    volumes:
+      - shared:/shared
+    restart: on-failure
 
 volumes:
   db-data:
+  shared:

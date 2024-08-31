@@ -27,7 +27,7 @@ services:
     restart: on-failure
 
   magnetic-reed-listener:
-    build: ./microservices/magnetic-reed-listener
+    build: microservices/magnetic_reed_listener
     environment: *common-variables
     ports:
       - "8001:8000"

@@ -1,8 +1,8 @@
 from functools import wraps
 from typing import Callable, get_type_hints
 
-from app_core.database.database_connector import DatabaseConnector
-from app_core.database.impl.database_connector_impl import DatabaseConnectorImpl
+from app.database.database_connector import DatabaseConnector
+from app.database.impl.database_connector_impl import DatabaseConnectorImpl
 
 bindings = { }
 

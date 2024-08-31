@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import FastAPI
 
-from app_core.routers.router_wrapper import RouterWrapper
+from app.routers.router_wrapper import RouterWrapper
 
 
 routers: List[RouterWrapper] = [

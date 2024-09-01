@@ -4,3 +4,6 @@
 [submodule "microservices/magnetic_reed_listener"]
 	path = microservices/magnetic_reed_listener
 	url = https://github.com/WIPtitle/magnetic-reeds-listener.git
+[submodule "microservices/project-core"]
+	path = microservices/project-core
+	url = https://github.com/WIPtitle/project-core.git

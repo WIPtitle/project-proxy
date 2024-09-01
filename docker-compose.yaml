@@ -25,6 +25,17 @@ services:
       - shared:/shared
     restart: on-failure
 
+  project-core:
+    build: microservices/project-core
+    environment: *common-variables
+    expose:
+      - "8000"
+    depends_on:
+      - db
+    volumes:
+      - shared:/shared
+    restart: on-failure
+
   magnetic-reeds-listener:
     build: microservices/magnetic_reed_listener
     environment: *common-variables

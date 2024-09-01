@@ -1,5 +1,6 @@
 x-common-variables: &common-variables
    PG_CREDENTIALS_FILE: /shared/pg_credentials.json
+   RBBT_CREDENTIALS_FILE: /shared/rbbt_credentials.json
 
 services:
   db:
@@ -8,10 +9,22 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
       - shared:/shared
-      - ./database_init.sh:/usr/bin/database_init.sh
+      - ./scripts/database_init.sh:/usr/bin/database_init.sh
     expose:
       - "5432"
     command: ["/bin/bash", "/usr/bin/database_init.sh"]
+    restart: on-failure
+
+  rabbitmq:
+    image: rabbitmq:3.13.7
+    environment: *common-variables
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq/data
+      - shared:/shared
+      - ./scripts/rabbitmq_init.sh:/usr/bin/rabbitmq_init.sh
+    expose:
+      - "5672"
+    command: ["/bin/bash", "/usr/bin/rabbitmq_init.sh"]
     restart: on-failure
 
   project-proxy:
@@ -49,4 +62,5 @@ services:
 
 volumes:
   db-data:
+  rabbitmq-data:
   shared:

@@ -4,7 +4,6 @@
 # Since there is no simple way to generate it without adding an installation step before docker compose,
 # and since there is no simple way to pass env variables to other services, this script saves the credentials
 # to a file mounted on a shared volume, and then export them as envs for Postgres.
-# Credential file could also be useful to share secrets between services without messing around with Docker's env config.
 
 CREDENTIALS_FILE=${PG_CREDENTIALS_FILE}
 echo "Saving Postgres credentials to ${PG_CREDENTIALS_FILE}"
@@ -14,7 +13,7 @@ if [ ! -f "$CREDENTIALS_FILE" ]; then
 
     cat <<EOF > "$CREDENTIALS_FILE"
 {
-  "POSTGRES_USER": "project-use",
+  "POSTGRES_USER": "project-user",
   "POSTGRES_PASSWORD": "$POSTGRES_PASSWORD",
   "POSTGRES_DB": "project-database"
 }

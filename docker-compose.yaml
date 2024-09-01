@@ -2,6 +2,9 @@ x-common-variables: &common-variables
    PG_CREDENTIALS_FILE: /shared/pg_credentials.json
    RBBT_CREDENTIALS_FILE: /shared/rbbt_credentials.json
 
+# Careful! Service names are sometimes referred in other projects instead of ip addresses, be mindful of that
+# if changing their names.
+# TODO solve this by centralizing the place where containers name are set, if possible
 services:
   db:
     image: postgres:16.4

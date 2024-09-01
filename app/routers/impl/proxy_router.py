@@ -17,7 +17,8 @@ class ProxyRouter(RouterWrapper):
         # This defines the mapping that the proxy uses, where the first string is the prefix client should use and the
         # second is the service that will be called (must coincide with name of docker service or ip if needed).
         self.service_mapping = {
-            "reeds": "magnetic-reeds-listener"
+            "reeds": "magnetic-reeds-listener",
+            "core": "project-core"
         }
 
 

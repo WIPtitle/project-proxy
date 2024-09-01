@@ -14,7 +14,7 @@ services:
     command: ["/bin/bash", "/usr/bin/database_init.sh"]
     restart: on-failure
 
-  project-core:
+  project-proxy:
     build: .
     environment: *common-variables
     ports:

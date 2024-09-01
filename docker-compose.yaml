@@ -21,16 +21,15 @@ services:
       - "8000:8000"
     depends_on:
       - db
-      - magnetic-reed-listener
     volumes:
       - shared:/shared
     restart: on-failure
 
-  magnetic-reed-listener:
+  magnetic-reeds-listener:
     build: microservices/magnetic_reed_listener
     environment: *common-variables
-    ports:
-      - "8001:8000"
+    expose:
+      - "8000"
     depends_on:
       - db
     volumes:

@@ -12,10 +12,10 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
       - shared:/shared
-      - ./scripts/database_init.sh:/usr/bin/database_init.sh
+      - ./other-entrypoints/database_entrypoint.sh:/usr/bin/database_entrypoint.sh
     expose:
       - "5432"
-    command: ["/bin/bash", "/usr/bin/database_init.sh"]
+    command: ["/bin/bash", "/usr/bin/database_entrypoint.sh"]
     restart: on-failure
 
   rabbitmq:
@@ -24,10 +24,10 @@ services:
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq/data
       - shared:/shared
-      - ./scripts/rabbitmq_init.sh:/usr/bin/rabbitmq_init.sh
+      - ./other-entrypoints/rabbitmq_entrypoint.sh:/usr/bin/rabbitmq_entrypoint.sh
     expose:
       - "5672"
-    command: ["/bin/bash", "/usr/bin/rabbitmq_init.sh"]
+    command: ["/bin/bash", "/usr/bin/rabbitmq_entrypoint.sh"]
     restart: on-failure
 
   project-proxy:

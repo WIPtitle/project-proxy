@@ -1,16 +1,9 @@
 from functools import wraps
 from typing import Callable, get_type_hints
 
-from app.database.database_connector import DatabaseConnector
-from app.database.impl.database_connector_impl import DatabaseConnectorImpl
 
 bindings = { }
 
-# Create instances only one time
-database_connector = DatabaseConnectorImpl()
-
-# Put them in an interface -> instance dict so they will be used everytime a dependency is required
-bindings[DatabaseConnector] = database_connector
 
 def resolve(interface):
     implementation = bindings[interface]

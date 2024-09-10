@@ -9,10 +9,6 @@ from app.routers.router_wrapper import RouterWrapper
 
 
 class ProxyRouter(RouterWrapper):
-
-    # There is really nothing to inject here since the proxy service currently doesn't need to interact with anything,
-    # it just routes requests. Though you never really know, so the basic database connector is included in this
-    # project.
     @inject
     def __init__(self):
         super().__init__(prefix=f"")
@@ -20,8 +16,7 @@ class ProxyRouter(RouterWrapper):
         # second is the service that will be called (must coincide with name of docker service or ip if needed).
         self.service_mapping = {
             "reeds-listener": os.getenv('MAGNETIC_REEDS_LISTENER_HOSTNAME'),
-            "cameras-listener": os.getenv('RTSP_CAMERAS_LISTENER_HOSTNAME'),
-            "mail-notifications": os.getenv('MAIL_NOTIFICATIONS_HOSTNAME')
+            "cameras-listener": os.getenv('RTSP_CAMERAS_LISTENER_HOSTNAME')
         }
 
 

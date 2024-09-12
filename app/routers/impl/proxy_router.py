@@ -15,8 +15,7 @@ class ProxyRouter(RouterWrapper):
         # This defines the mapping that the proxy uses, where the first string is the prefix client should use and the
         # second is the service that will be called (must coincide with name of docker service or ip if needed).
         self.service_mapping = {
-            "reeds-listener": os.getenv('MAGNETIC_REEDS_LISTENER_HOSTNAME'),
-            "cameras-listener": os.getenv('RTSP_CAMERAS_LISTENER_HOSTNAME')
+            "devices-manager": os.getenv('DEVICES_MANAGER_HOSTNAME')
         }
 
 

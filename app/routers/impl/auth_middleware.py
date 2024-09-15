@@ -1,3 +1,5 @@
+import re
+
 from urllib.parse import urlparse
 
 from fastapi import Request

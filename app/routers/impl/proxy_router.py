@@ -16,7 +16,9 @@ class ProxyRouter(RouterWrapper):
         # second is the service that will be called (must coincide with name of docker service or ip if needed).
         self.service_mapping = {
             "devices-manager-service": os.getenv('DEVICES_MANAGER_HOSTNAME'),
-            "auth-service": os.getenv('AUTH_HOSTNAME')
+            "auth-service": os.getenv('AUTH_HOSTNAME'),
+            "mail-service": os.getenv('MAIL_NOTIFICATIONS_HOSTNAME'),
+            "audio-service": os.getenv('LOCAL_AUDIO_MANAGER_HOSTNAME')
         }
 
 

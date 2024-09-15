@@ -14,6 +14,13 @@ routers: List[RouterWrapper] = [
 ]
 
 app = FastAPI()
+middleware = AuthMiddleware(AuthClient())
+
+@app.middleware("http")
+async def check_authorization(request: Request, call_next):
+    await middleware.dispatch(request)
+    response = await call_next(request)
+    return response
 
 for exc, handler in exception_handlers:
     app.add_exception_handler(exc, handler)

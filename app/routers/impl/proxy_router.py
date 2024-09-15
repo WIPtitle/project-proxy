@@ -1,7 +1,7 @@
 import os
 
 import httpx
-from fastapi import Request, HTTPException
+from fastapi import Request, HTTPException, Response
 
 from app.config.bindings import inject
 from app.exceptions.service_not_exists_exception import ServiceNotExistsException
@@ -15,8 +15,8 @@ class ProxyRouter(RouterWrapper):
         # This defines the mapping that the proxy uses, where the first string is the prefix client should use and the
         # second is the service that will be called (must coincide with name of docker service or ip if needed).
         self.service_mapping = {
-            "devices-manager": os.getenv('DEVICES_MANAGER_HOSTNAME'),
-            "auth": os.getenv('AUTH_HOSTNAME')
+            "devices-manager-service": os.getenv('DEVICES_MANAGER_HOSTNAME'),
+            "auth-service": os.getenv('AUTH_HOSTNAME')
         }
 
 
@@ -38,7 +38,7 @@ class ProxyRouter(RouterWrapper):
             except httpx.HTTPStatusError as exc:
                 # Propagate return error from services
                 raise HTTPException(status_code=exc.response.status_code, detail=exc.response.text)
-        return response
+        return Response(content=response.content, status_code=response.status_code, headers=dict(response.headers))
 
 
     def _define_routes(self):

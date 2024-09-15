@@ -1,8 +1,10 @@
 from typing import List
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 
+from app.clients.auth_client import AuthClient
 from app.config.handlers import get_exception_handlers
+from app.routers.impl.auth_middleware import AuthMiddleware
 from app.routers.impl.proxy_router import ProxyRouter
 from app.routers.router_wrapper import RouterWrapper
 

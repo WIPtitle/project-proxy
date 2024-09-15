@@ -1,7 +1,8 @@
 from typing import List
 
 from fastapi import FastAPI, Request
-from starlette.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from app.clients.auth_client import AuthClient
 from app.config.handlers import get_exception_handlers
@@ -19,6 +20,7 @@ routers: List[RouterWrapper] = [
 app = FastAPI()
 middleware = AuthMiddleware(AuthClient())
 
+
 @app.middleware("http")
 async def check_authorization(request: Request, call_next):
     try:
@@ -29,6 +31,19 @@ async def check_authorization(request: Request, call_next):
     except AuthenticationException as e:
         response = JSONResponse({"detail": str(e.message)}, status_code=401)
     return response
+
+
+origins = [
+    "http://localhost:4200",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 for exc, handler in exception_handlers:
     app.add_exception_handler(exc, handler)

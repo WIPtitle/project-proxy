@@ -34,7 +34,7 @@ async def check_authorization(request: Request, call_next):
 
 
 origins = [
-    "http://localhost:4200",
+    "http://localhost",
 ]
 
 app.add_middleware(

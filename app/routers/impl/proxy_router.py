@@ -27,7 +27,12 @@ class ProxyRouter(RouterWrapper):
         if output_service is None:
             raise ServiceNotExistsException("Routing failed: specified prefix isn't mapped to a service")
 
+        query_params = request.url.query
         url = f"http://{output_service}:8000/{path}"
+        if query_params:
+            url = f"{url}?{query_params}"
+
+        print(f"Routing request to {url}")
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.request(

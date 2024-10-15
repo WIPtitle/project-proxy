@@ -17,6 +17,7 @@ class AuthMiddleware:
             (re.compile(r"^/auth/user$"), "GET"): None,
             (re.compile(r"^/auth/permissions$"), "GET"): None,
             (re.compile(r"^/users$"), "GET"): None,
+            (re.compile(r"^/users/is-initialized$"), "GET"): None,
             (re.compile(r"^/users$"), "PUT"): None,
             (re.compile(r"^/users$"), "DELETE"): None,
             (re.compile(r"^/users/first$"), "POST"): None,

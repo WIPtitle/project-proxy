@@ -33,7 +33,7 @@ class ProxyRouter(RouterWrapper):
             url = f"{url}?{query_params}"
 
         print(f"Routing request to {url}")
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(timeout=httpx.Timeout(10.0)) as client:
             try:
                 response = await client.request(
                     method=request.method,

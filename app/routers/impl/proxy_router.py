@@ -17,7 +17,7 @@ class ProxyRouter(RouterWrapper):
         self.service_mapping = {
             "devices-manager-service": os.getenv('DEVICES_MANAGER_HOSTNAME'),
             "auth-service": os.getenv('AUTH_HOSTNAME'),
-            "mail-service": os.getenv('MAIL_NOTIFICATIONS_HOSTNAME'),
+            "notifications-service": os.getenv('NOTIFICATIONS_MANAGER_HOSTNAME'),
             "audio-service": os.getenv('LOCAL_AUDIO_MANAGER_HOSTNAME')
         }
 

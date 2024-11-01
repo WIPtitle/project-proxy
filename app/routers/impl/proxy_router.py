@@ -6,12 +6,14 @@ from fastapi import Request, HTTPException, Response
 from app.config.bindings import inject
 from app.exceptions.service_not_exists_exception import ServiceNotExistsException
 from app.routers.router_wrapper import RouterWrapper
+from app.services.notification.url_service import UrlService
 
 
 class ProxyRouter(RouterWrapper):
     @inject
-    def __init__(self):
+    def __init__(self, url_service: UrlService):
         super().__init__(prefix=f"")
+        self.url_service = url_service
         # This defines the mapping that the proxy uses, where the first string is the prefix client should use and the
         # second is the service that will be called (must coincide with name of docker service or ip if needed).
         self.service_mapping = {
@@ -67,3 +69,9 @@ class ProxyRouter(RouterWrapper):
         @self.router.api_route("/{input_service}/{path:path}", methods=["DELETE"], operation_id="proxy_delete")
         async def proxy_delete(request: Request, input_service: str, path: str):
             return await self._proxy(request, input_service, path)
+
+        # While this is not the best place to put this endpoint, it beats having a separate service just to return the
+        # urls. The proxy seems the best wrong place.
+        @self.router.get("/external-urls")
+        def get_external_urls():
+            return self.url_service.get_external_urls()

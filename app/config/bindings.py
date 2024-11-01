@@ -1,9 +1,13 @@
 from functools import wraps
 from typing import Callable, get_type_hints
 
+from app.services.notification.impl.url_service_impl import UrlServiceImpl
+from app.services.notification.url_service import UrlService
 
 bindings = { }
 
+url_service = UrlServiceImpl()
+bindings[UrlService] = url_service
 
 def resolve(interface):
     implementation = bindings[interface]

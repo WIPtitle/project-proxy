@@ -14,6 +14,7 @@ class AuthMiddleware:
         self.permission_map = {
             (re.compile(r"^/auth/token$"), "POST"): None,
             (re.compile(r"^/auth/user$"), "GET"): None,
+            (re.compile(r"^/auth/user$"), "POST"): None,
             (re.compile(r"^/auth/permissions$"), "GET"): None,
             (re.compile(r"^/users$"), "GET"): None,
             (re.compile(r"^/users/is-initialized$"), "GET"): None,

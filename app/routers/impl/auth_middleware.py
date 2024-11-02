@@ -40,6 +40,7 @@ class AuthMiddleware:
             (re.compile(r"^/device-group/\d+/devices$"), "GET"): None,
             (re.compile(r"^/device-group/\d+/devices$"), "POST"): "MODIFY_DEVICES",
             (re.compile(r"^/ntfy-config/credentials$"), "GET"): "SEE_NOTIFICATIONS_CONFIG",
+            (re.compile(r"^/ntfy-config/credentials$"), "PUT"): "UPDATE_NOTIFICATIONS_CONFIG",
             (re.compile(r"^/audio"), "GET"): None,
             (re.compile(r"^/audio"), "POST"): "CHANGE_ALARM_SOUND",
             (re.compile(r"^/audio"), "DELETE"): "CHANGE_ALARM_SOUND",

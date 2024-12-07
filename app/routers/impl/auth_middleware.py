@@ -28,7 +28,7 @@ class AuthMiddleware:
             (re.compile(r"^/camera$"), "PUT"): "MODIFY_DEVICES",
             (re.compile(r"^/camera$"), "DELETE"): "MODIFY_DEVICES",
             (re.compile(r"^/camera/generic$"), "GET"): None,
-            (re.compile(r"^/camera/[^/]+/stream$"), "GET"): None,#TODO only for testing
+            (re.compile(r"^/camera/[^/]+/stream$"), "GET"): "ACCESS_STREAM_CAMERAS",
             (re.compile(r"^/recording$"), "GET"): "ACCESS_RECORDINGS",
             (re.compile(r"^/recording/download$"), "GET"): "ACCESS_RECORDINGS",
             (re.compile(r"^/recording/stream$"), "GET"): "ACCESS_RECORDINGS",
@@ -57,6 +57,10 @@ class AuthMiddleware:
         method = request.method
 
         token = request.headers.get("Authorization")
+        if token is None and request.query_params.get("auth_token") is not None:
+            # Let token be passed as query parameter for methods that can't include it in headers (mainly /stream)
+            token = "Bearer " + request.query_params.get("auth_token")
+
         user = await self.auth_client.get_authenticated_user(token)
 
         # Search inside of map the matching endpoint. Desc ordered because we want the "most matching" endpoint chosen

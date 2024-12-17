@@ -40,7 +40,7 @@ class ProxyRouter(RouterWrapper):
                 print("Stream request in proxy detected, using stream method")
 
                 async def stream_proxy_frames():
-                    async with httpx.AsyncClient(timeout=httpx.Timeout(10.0)) as client:
+                    async with httpx.AsyncClient(timeout=httpx.Timeout(60.0)) as client:
                         async with client.stream("GET", url) as response:
                             async for chunk in response.aiter_bytes():
                                 yield chunk
@@ -50,7 +50,7 @@ class ProxyRouter(RouterWrapper):
                 return StreamingResponse(stream_proxy_frames(),
                                          media_type="multipart/x-mixed-replace;boundary=frame")
             else:
-                async with httpx.AsyncClient(timeout=httpx.Timeout(10.0)) as client:
+                async with httpx.AsyncClient(timeout=httpx.Timeout(60.0)) as client:
                     response = await client.request(
                         method=request.method,
                         url=url,

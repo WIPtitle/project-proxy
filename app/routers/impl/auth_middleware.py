@@ -39,6 +39,8 @@ class AuthMiddleware:
             (re.compile(r"^/device-group/\d+/start-listening$"), "POST"): "START_ALARM",
             (re.compile(r"^/device-group/\d+/stop-listening$"), "POST"): "STOP_ALARM",
             (re.compile(r"^/device-group/\d+/devices$"), "GET"): None,
+            (re.compile(r"^/device-group/\d+/status$"), "GET"): None,
+            (re.compile(r"^/device-group/\d+/status/stream$"), "GET"): None,
             (re.compile(r"^/device-group/\d+/devices$"), "POST"): "MODIFY_DEVICES",
             (re.compile(r"^/ntfy-config/credentials$"), "GET"): None,
             (re.compile(r"^/ntfy-config/credentials$"), "PUT"): "UPDATE_NOTIFICATIONS_CONFIG",

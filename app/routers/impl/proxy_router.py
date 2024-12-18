@@ -47,8 +47,14 @@ class ProxyRouter(RouterWrapper):
                                 if await request.is_disconnected():
                                     break
 
-                return StreamingResponse(stream_proxy_frames(),
-                                         media_type="multipart/x-mixed-replace;boundary=frame")
+                media_type = "application/octet-stream"
+                if "device-group" in url:
+                    media_type = "text/event-stream"
+                elif "camera" in url:
+                    media_type = "multipart/x-mixed-replace;boundary=frame"
+
+                return StreamingResponse(stream_proxy_frames(), media_type=media_type)
+
             else:
                 async with httpx.AsyncClient(timeout=httpx.Timeout(60.0)) as client:
                     response = await client.request(

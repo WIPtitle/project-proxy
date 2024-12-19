@@ -52,6 +52,8 @@ class ProxyRouter(RouterWrapper):
                     media_type = "text/event-stream"
                 elif "camera" in url:
                     media_type = "multipart/x-mixed-replace;boundary=frame"
+                elif "recording" in url:
+                    media_type = "video/webm"
 
                 return StreamingResponse(stream_proxy_frames(), media_type=media_type)
 

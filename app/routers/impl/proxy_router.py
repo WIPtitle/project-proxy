@@ -28,10 +28,10 @@ class ProxyRouter(RouterWrapper):
         if output_service is None:
             raise ServiceNotExistsException("Routing failed: specified prefix isn't mapped to a service")
 
-        query_params = request.url.query
+        query_params = {k: v for k, v in request.query_params.items() if k != "auth_token"}
         url = f"http://{output_service}:8000/{path}"
         if query_params:
-            url = f"{url}?{query_params}"
+            url = f"{url}?{httpx.QueryParams(query_params)}"
 
         print(f"Routing request to {url}")
         try:

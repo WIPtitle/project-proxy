@@ -34,11 +34,10 @@ class ProxyRouter(RouterWrapper):
             url = f"{url}?{httpx.QueryParams(query_params)}"
 
         print(f"Routing request to {url}")
+
         try:
             # 'bit of an ugly hack, but I don't think there will be any other stream methods so cope with it, I'm tired
             if "stream" in url and request.method == "GET" and output_service == os.getenv('DEVICES_MANAGER_HOSTNAME'):
-                print("Stream request in proxy detected, using stream method")
-
                 async def stream_proxy_frames():
                     async with httpx.AsyncClient(timeout=httpx.Timeout(60.0)) as client:
                         async with client.stream("GET", url) as response:

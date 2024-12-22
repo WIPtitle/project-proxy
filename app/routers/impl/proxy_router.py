@@ -50,7 +50,7 @@ class ProxyRouter(RouterWrapper):
                 if "device-group" in url:
                     media_type = "text/event-stream"
                 elif "camera" in url:
-                    media_type = "text/event-stream"
+                    media_type = "multipart/x-mixed-replace;boundary=frame"
                 elif "recording" in url:
                     media_type = "video/webm"
 

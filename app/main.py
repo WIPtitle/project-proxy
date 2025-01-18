@@ -46,9 +46,3 @@ for exc, handler in exception_handlers:
 
 for router in routers:
     app.include_router(router.get_fastapi_router())
-
-# force bindings init on boot instead of lazy loading
-@app.on_event("startup")
-async def startup_event():
-    from app.config import bindings
-    print("Bindings initialized: ", bindings)

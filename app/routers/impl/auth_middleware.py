@@ -29,6 +29,7 @@ class AuthMiddleware:
             (re.compile(r"^/camera$"), "DELETE"): "MODIFY_DEVICES",
             (re.compile(r"^/camera/generic$"), "GET"): None,
             (re.compile(r"^/camera/[^/]+/stream$"), "GET"): "ACCESS_STREAM_CAMERAS",
+            (re.compile(r"^/static/.*$"), "GET"): "ACCESS_STREAM_CAMERAS",
             (re.compile(r"^/recording$"), "GET"): "ACCESS_RECORDINGS",
             (re.compile(r"^/recording/[^/]+/download$"), "GET"): "ACCESS_RECORDINGS",
             (re.compile(r"^/recording/[^/]+/stream$"), "GET"): "ACCESS_RECORDINGS",

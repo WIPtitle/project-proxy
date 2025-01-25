@@ -38,23 +38,16 @@ class ProxyRouter(RouterWrapper):
         try:
             # 'bit of an ugly hack, but I don't think there will be any other stream methods so cope with it, I'm tired
             if "stream" in url and request.method == "GET" and output_service == os.getenv('DEVICES_MANAGER_HOSTNAME'):
-                async def stream_proxy_frames():
-                    async with httpx.AsyncClient(timeout=httpx.Timeout(60.0)) as client:
-                        async with client.stream("GET", url) as response:
-                            async for chunk in response.aiter_bytes():
-                                yield chunk
-                                if await request.is_disconnected():
-                                    break
+                headers = {key: value for key, value in request.headers.items() if key.lower() != 'host'}
+                async with httpx.AsyncClient(timeout=httpx.Timeout(60.0)) as client:
+                    response = await client.get(url, headers=headers)
 
-                media_type = "application/octet-stream"
-                if "device-group" in url:
-                    media_type = "text/event-stream"
-                elif "camera" in url:
-                    media_type = "multipart/x-mixed-replace;boundary=frame"
-                elif "recording" in url:
-                    media_type = "video/webm"
-
-                return StreamingResponse(stream_proxy_frames(), media_type=media_type)
+                    return StreamingResponse(
+                        content=response.aiter_bytes(),
+                        status_code=response.status_code,
+                        headers=dict(response.headers),
+                        media_type=response.headers.get('content-type')
+                    )
 
             else:
                 async with httpx.AsyncClient(timeout=httpx.Timeout(60.0)) as client:

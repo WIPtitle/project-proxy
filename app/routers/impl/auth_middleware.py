@@ -35,8 +35,6 @@ class AuthMiddleware:
             (re.compile(r"^/pir$"), "POST"): "MODIFY_DEVICES",
             (re.compile(r"^/pir$"), "PUT"): "MODIFY_DEVICES",
             (re.compile(r"^/pir$"), "DELETE"): "MODIFY_DEVICES",
-            (re.compile(r"^/camera/[^/]+/stream$"), "GET"): "ACCESS_STREAM_CAMERAS",
-            (re.compile(r"^/static/.*$"), "GET"): "ACCESS_STREAM_CAMERAS",
             (re.compile(r"^/recording$"), "GET"): "ACCESS_RECORDINGS",
             (re.compile(r"^/recording$"), "DELETE"): "ACCESS_RECORDINGS",
             (re.compile(r"^/recording/[^/]+/download$"), "GET"): "ACCESS_RECORDINGS",

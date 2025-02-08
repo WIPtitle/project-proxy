@@ -39,13 +39,25 @@ class ProxyRouter(RouterWrapper):
             # 'bit of an ugly hack, but I don't think there will be any other stream methods so cope with it, I'm tired
             if "stream" in url and request.method == "GET" and output_service == os.getenv('DEVICES_MANAGER_HOSTNAME'):
                 headers = {key: value for key, value in request.headers.items() if key.lower() != 'host'}
-                async def stream():
-                    async with httpx.AsyncClient(timeout=httpx.Timeout(60.0)) as client:
-                        async with client.stream("GET", url, headers=headers) as response:
-                            async for chunk in response.aiter_text():
-                                yield chunk
+                if "status" in url:
+                    async def stream():
+                        async with httpx.AsyncClient(timeout=httpx.Timeout(60.0)) as client:
+                            async with client.stream("GET", url, headers=headers) as response:
+                                async for chunk in response.aiter_text():
+                                    yield chunk
 
-                return StreamingResponse(stream(), media_type="text/event-stream")
+                    return StreamingResponse(stream(), media_type="text/event-stream")
+
+                elif "recording" in url:
+                    async with httpx.AsyncClient(timeout=httpx.Timeout(60.0)) as client:
+                        response = await client.get(url, headers=headers)
+
+                        return StreamingResponse(
+                            content=response.aiter_bytes(),
+                            status_code=response.status_code,
+                            headers=dict(response.headers),
+                            media_type=response.headers.get('content-type')
+                        )
 
             else:
                 async with httpx.AsyncClient(timeout=httpx.Timeout(60.0)) as client:

@@ -82,6 +82,10 @@ class ProxyRouter(RouterWrapper):
         async def proxy_get(request: Request, input_service: str, path: str):
             return await self._proxy(request, input_service, path)
 
+        @self.router.api_route("/{input_service}/{path:path}", methods=["HEAD"], operation_id="proxy_head")
+        async def proxy_head(request: Request, input_service: str, path: str):
+            return await self._proxy(request, input_service, path)
+
         @self.router.api_route("/{input_service}/{path:path}", methods=["POST"], operation_id="proxy_post")
         async def proxy_post(request: Request, input_service: str, path: str):
             return await self._proxy(request, input_service, path)

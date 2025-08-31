@@ -29,6 +29,7 @@ class AuthMiddleware:
             (re.compile(r"^/camera/[^/]+$"), "PUT"): "MODIFY_DEVICES",
             (re.compile(r"^/camera/[^/]+$"), "DELETE"): "MODIFY_DEVICES",
             (re.compile(r"^/sensor$"), "GET"): None,
+            (re.compile(r"^/sensor/servers$"), "GET"): None,
             (re.compile(r"^/sensor/[^/]+$"), "GET"): None,
             (re.compile(r"^/sensor$"), "POST"): "MODIFY_DEVICES",
             (re.compile(r"^/sensor/[^/]+$"), "PUT"): "MODIFY_DEVICES",

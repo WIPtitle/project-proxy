@@ -24,6 +24,7 @@ class AuthMiddleware:
             (re.compile(r"^/users$"), "POST"): "USER_MANAGER",
             (re.compile(r"^/disk-usage$"), "GET"): None,
             (re.compile(r"^/camera$"), "GET"): None,
+            (re.compile(r"^/camera/[^/]+/stream$"), "GET"): "MODIFY_DEVICES",
             (re.compile(r"^/camera/[^/]+$"), "GET"): None,
             (re.compile(r"^/camera$"), "POST"): "MODIFY_DEVICES",
             (re.compile(r"^/camera/[^/]+$"), "PUT"): "MODIFY_DEVICES",

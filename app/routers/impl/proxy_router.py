@@ -13,8 +13,6 @@ class ProxyRouter(RouterWrapper):
     @inject
     def __init__(self):
         super().__init__(prefix=f"")
-        # This defines the mapping that the proxy uses, where the first string is the prefix client should use and the
-        # second is the service that will be called (must coincide with name of docker service or ip if needed).
         self.service_mapping = {
             "devices-manager-service": os.getenv('DEVICES_MANAGER_HOSTNAME'),
             "auth-service": os.getenv('AUTH_HOSTNAME'),
@@ -47,7 +45,24 @@ class ProxyRouter(RouterWrapper):
 
                     return StreamingResponse(stream(), media_type="text/event-stream")
 
-                elif "recording" in url or "camera" in url:
+                elif "camera" in url:
+                    async def stream_mjpeg():
+                        async with httpx.AsyncClient(timeout=httpx.Timeout(300.0)) as client:
+                            async with client.stream("GET", url, headers=headers) as response:
+                                async for chunk in response.aiter_bytes(chunk_size=65536):
+                                    yield chunk
+
+                    return StreamingResponse(
+                        stream_mjpeg(),
+                        media_type="multipart/x-mixed-replace; boundary=frame",
+                        headers={
+                            "Cache-Control": "no-cache",
+                            "Connection": "keep-alive",
+                            "X-Accel-Buffering": "no",
+                        }
+                    )
+
+                elif "recording" in url:
                     async def stream_content():
                         async with httpx.AsyncClient(timeout=httpx.Timeout(300.0)) as client:
                             async with client.stream("GET", url, headers=headers) as response:
@@ -76,11 +91,7 @@ class ProxyRouter(RouterWrapper):
         except httpx.HTTPStatusError as exc:
             raise HTTPException(status_code=exc.response.status_code, detail=exc.response.text)
 
-
     def _define_routes(self):
-        # Here HTTP methods are separated instead of passing all of them to "methods" to avoid the FastAPI warning
-        # UserWarning: Duplicate Operation ID. This shouldn't affect anything, really.
-
         @self.router.api_route("/{input_service}/{path:path}", methods=["GET"], operation_id="proxy_get")
         async def proxy_get(request: Request, input_service: str, path: str):
             return await self._proxy(request, input_service, path)
